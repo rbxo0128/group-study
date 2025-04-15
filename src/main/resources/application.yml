@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: dev
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.groupstudy.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
+server:
+  servlet:
+    session:
+      timeout: 1800
