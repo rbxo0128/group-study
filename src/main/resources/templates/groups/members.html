@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>멤버 관리 - 그룹 스터디</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>멤버 관리: <span th:text="${group.name}">그룹명</span></h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/dashboard}">대시보드</a></li>
+                <li><a th:href="@{/groups}">스터디 그룹</a></li>
+                <li><a th:href="@{/groups/{id}(id=${group.groupId})}">그룹으로 돌아가기</a></li>
+                <li><a th:href="@{/auth/logout}">로그아웃</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div th:if="${message}" class="alert alert-success">
+        <p th:text="${message}"></p>
+    </div>
+
+    <section>
+        <h2>멤버 목록</h2>
+
+        <div th:if="${members.empty}">
+            <p>그룹에 멤버가 없습니다.</p>
+        </div>
+
+        <table th:unless="${members.empty}" class="table">
+            <thead>
+            <tr>
+                <th>이름</th>
+                <th>사용자명</th>
+                <th>이메일</th>
+                <th>역할</th>
+                <th>작업</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="member, status : ${members}">
+                <td th:text="${member.fullName}">이름</td>
+                <td th:text="${member.username}">사용자명</td>
+                <td th:text="${member.email}">이메일</td>
+                <td th:text="${memberships[status.index].role}">역할</td>
+                <td>
+                    <form th:if="${memberships[status.index].role != 'ADMIN'}"
+                          th:action="@{/groups/{groupId}/members/{memberId}/role(groupId=${group.groupId}, memberId=${memberships[status.index].memberId})}"
+                          method="post">
+                        <select name="role">
+                            <option value="MEMBER" th:selected="${memberships[status.index].role == 'MEMBER'}">멤버</option>
+                            <option value="ADMIN" th:selected="${memberships[status.index].role == 'ADMIN'}">관리자</option>
+                        </select>
+                        <button type="submit" class="btn btn-small">역할 변경</button>
+                    </form>
+
+                    <form th:if="${memberships[status.index].role != 'ADMIN'}"
+                          th:action="@{/groups/{groupId}/members/{memberId}/remove(groupId=${group.groupId}, memberId=${memberships[status.index].memberId})}"
+                          method="post" onsubmit="return confirm('정말로 이 멤버를 삭제하시겠습니까?');">
+                        <button type="submit" class="btn btn-small btn-danger">삭제</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+</body>
+</html>

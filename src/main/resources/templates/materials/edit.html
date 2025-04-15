@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>학습 자료 수정 - 그룹 스터디</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>학습 자료 수정</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/dashboard}">대시보드</a></li>
+                <li><a th:href="@{/groups}">스터디 그룹</a></li>
+                <li th:if="${group != null}"><a th:href="@{/groups/{id}(id=${group.groupId})}">그룹으로 돌아가기</a></li>
+                <li th:if="${group != null}"><a th:href="@{/materials/group/{id}(id=${group.groupId})}">그룹 자료 목록</a></li>
+                <li><a th:href="@{/auth/logout}">로그아웃</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
+    <section>
+        <form th:action="@{/materials/{id}/edit(id=${material.materialId})}" th:object="${material}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" id="title" th:field="*{title}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">카테고리</label>
+                <input type="text" id="category" th:field="*{category}">
+            </div>
+
+            <div class="form-group">
+                <label for="description">설명</label>
+                <textarea id="description" th:field="*{description}" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="content">내용</label>
+                <textarea id="content" th:field="*{content}" rows="10"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="file">첨부파일</label>
+                <div th:if="${material.filePath != null}" class="current-file">
+                    <p>현재 파일: <span th:text="${material.filePath.substring(material.filePath.indexOf('_') + 1)}"></span></p>
+                    <p>새 파일을 업로드하면 기존 파일이 대체됩니다.</p>
+                </div>
+                <input type="file" id="file" name="file">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">저장</button>
+                <a th:href="@{/materials/{id}(id=${material.materialId})}" class="btn btn-secondary">취소</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

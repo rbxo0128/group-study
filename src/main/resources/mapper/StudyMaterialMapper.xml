@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.groupstudy.model.mapper.StudyMaterialMapper">
+
+    <select id="findById" resultType="com.example.groupstudy.model.entity.StudyMaterial">
+        SELECT * FROM study_materials WHERE material_id = #{materialId}
+    </select>
+
+    <select id="findByUserId" resultType="com.example.groupstudy.model.entity.StudyMaterial">
+        SELECT * FROM study_materials WHERE user_id = #{userId}
+    </select>
+
+    <select id="findByGroupId" resultType="com.example.groupstudy.model.entity.StudyMaterial">
+        SELECT * FROM study_materials WHERE group_id = #{groupId}
+    </select>
+
+    <select id="findByCategory" resultType="com.example.groupstudy.model.entity.StudyMaterial">
+        SELECT * FROM study_materials WHERE category = #{category}
+    </select>
+
+    <select id="findAll" resultType="com.example.groupstudy.model.entity.StudyMaterial">
+        SELECT * FROM study_materials
+    </select>
+
+    <insert id="insert" parameterType="com.example.groupstudy.model.entity.StudyMaterial" useGeneratedKeys="true" keyProperty="materialId">
+        INSERT INTO study_materials (title, description, content, category, file_path, user_id, group_id)
+        VALUES (#{title}, #{description}, #{content}, #{category}, #{filePath}, #{userId}, #{groupId})
+    </insert>
+
+    <update id="update" parameterType="com.example.groupstudy.model.entity.StudyMaterial">
+        UPDATE study_materials
+        SET title = #{title},
+            description = #{description},
+            content = #{content},
+            category = #{category},
+            file_path = #{filePath},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE material_id = #{materialId}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM study_materials WHERE material_id = #{materialId}
+    </delete>
+
+</mapper>

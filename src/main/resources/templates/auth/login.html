@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 - 그룹 스터디</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h2>로그인</h2>
+
+    <div th:if="${param.error}" class="alert alert-danger">
+        <p>잘못된 사용자명 또는 비밀번호입니다.</p>
+    </div>
+
+    <div th:if="${param.logout}" class="alert alert-success">
+        <p>로그아웃되었습니다.</p>
+    </div>
+
+    <div th:if="${param.registered}" class="alert alert-success">
+        <p>회원가입이 완료되었습니다. 로그인하세요.</p>
+    </div>
+
+    <form th:action="@{/auth/login}" method="post">
+        <div class="form-group">
+            <label for="username">사용자명:</label>
+            <input type="text" id="username" name="username" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">로그인</button>
+        </div>
+    </form>
+
+    <p>계정이 없으신가요? <a th:href="@{/auth/register}">회원가입</a></p>
+</div>
+</body>
+</html>

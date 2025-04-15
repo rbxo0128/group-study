@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.groupstudy.mapper.UserMapper">
+<mapper namespace="com.example.groupstudy.model.mapper.UserMapper">
 
-    <select id="findById" resultType="com.groupstudy.entity.User">
+    <select id="findById" resultType="com.example.groupstudy.model.entity.User">
         SELECT * FROM users WHERE user_id = #{userId}
     </select>
 
-    <select id="findByUsername" resultType="com.groupstudy.entity.User">
+    <select id="findByUsername" resultType="com.example.groupstudy.model.entity.User">
         SELECT * FROM users WHERE username = #{username}
     </select>
 
-    <select id="findAll" resultType="com.groupstudy.entity.User">
+    <select id="findAll" resultType="com.example.groupstudy.model.entity.User">
         SELECT * FROM users
     </select>
 
-    <insert id="insert" parameterType="com.groupstudy.entity.User" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="insert" parameterType="com.example.groupstudy.model.entity.User" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO users (username, password, email, full_name, role)
         VALUES (#{username}, #{password}, #{email}, #{fullName}, #{role})
     </insert>
 
-    <update id="update" parameterType="com.groupstudy.entity.User">
+    <update id="update" parameterType="com.example.groupstudy.model.entity.User">
         UPDATE users
         SET username = #{username},
             password = #{password},

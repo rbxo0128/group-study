@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${material.title} + ' - 그룹 스터디'">자료 제목 - 그룹 스터디</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1 th:text="${material.title}">자료 제목</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/dashboard}">대시보드</a></li>
+                <li><a th:href="@{/groups}">스터디 그룹</a></li>
+                <li th:if="${group != null}"><a th:href="@{/groups/{id}(id=${group.groupId})}">그룹으로 돌아가기</a></li>
+                <li th:if="${group != null}"><a th:href="@{/materials/group/{id}(id=${group.groupId})}">그룹 자료 목록</a></li>
+                <li><a th:href="@{/auth/logout}">로그아웃</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div th:if="${message}" class="alert alert-success">
+        <p th:text="${message}"></p>
+    </div>
+
+    <section class="material-details">
+        <div class="material-meta">
+            <p th:if="${material.category != null}" class="category">카테고리: <span th:text="${material.category}">카테고리</span></p>
+            <p th:if="${group != null}" class="group">그룹: <span th:text="${group.name}">그룹명</span></p>
+            <p class="date">등록일: <span th:text="${#temporals.format(material.createdAt, 'yyyy-MM-dd')}">2025-01-01</span></p>
+
+            <div th:if="${material.filePath != null}" class="file-download">
+                <a th:href="@{/materials/download/{id}(id=${material.materialId})}" class="btn btn-secondary">
+                    <span class="file-icon">📎</span> 첨부파일 다운로드
+                </a>
+            </div>
+        </div>
+
+        <div class="material-description" th:if="${material.description != null}">
+            <h3>설명</h3>
+            <p th:text="${material.description}">자료 설명</p>
+        </div>
+
+        <div class="material-content" th:if="${material.content != null}">
+            <h3>내용</h3>
+            <div th:utext="${material.content}">자료 내용</div>
+        </div>
+
+        <div class="material-actions">
+            <a th:href="@{/materials/{id}/edit(id=${material.materialId})}" class="btn btn-secondary">수정</a>
+
+            <form th:action="@{/materials/{id}/delete(id=${material.materialId})}" method="post" onsubmit="return confirm('정말로 이 자료를 삭제하시겠습니까?');">
+                <button type="submit" class="btn btn-danger">삭제</button>
+            </form>
+
+            <a th:if="${group != null}" th:href="@{/materials/group/{id}(id=${group.groupId})}" class="btn btn-secondary">목록으로</a>
+            <a th:unless="${group != null}" th:href="@{/dashboard}" class="btn btn-secondary">대시보드로</a>
+        </div>
+    </section>
+</div>
+</body>
+</html>

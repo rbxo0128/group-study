@@ -9,6 +9,7 @@ public class StudyGroup {
     private Integer groupId;
     private String name;
     private Integer createdBy;
+    private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

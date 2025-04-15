@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>학습 자료 - 그룹 스터디</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>학습 자료: <span th:text="${group.name}">그룹명</span></h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/dashboard}">대시보드</a></li>
+                <li><a th:href="@{/groups}">스터디 그룹</a></li>
+                <li><a th:href="@{/groups/{id}(id=${group.groupId})}">그룹으로 돌아가기</a></li>
+                <li><a th:href="@{/auth/logout}">로그아웃</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div th:if="${message}" class="alert alert-success">
+        <p th:text="${message}"></p>
+    </div>
+
+    <section>
+        <div class="button-container">
+            <a th:href="@{/materials/create(groupId=${group.groupId})}" class="btn btn-primary">새 학습 자료 추가</a>
+        </div>
+
+        <div th:if="${materials.empty}">
+            <p>등록된 학습 자료가 없습니다.</p>
+        </div>
+
+        <div th:unless="${materials.empty}">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>카테고리</th>
+                    <th>작성자</th>
+                    <th>등록일</th>
+                    <th>첨부파일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material : ${materials}">
+                    <td><a th:href="@{/materials/{id}(id=${material.materialId})}" th:text="${material.title}">자료 제목</a></td>
+                    <td th:text="${material.category}">카테고리</td>
+                    <td>작성자</td>
+                    <td th:text="${#temporals.format(material.createdAt, 'yyyy-MM-dd')}">2025-01-01</td>
+                    <td>
+                        <a th:if="${material.filePath != null}" th:href="@{/materials/download/{id}(id=${material.materialId})}">
+                            <span class="file-icon">📎</span> 다운로드
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+</body>
+</html>

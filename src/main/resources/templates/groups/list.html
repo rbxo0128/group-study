@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>스터디 그룹 목록 - 그룹 스터디</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>스터디 그룹</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/dashboard}">대시보드</a></li>
+                <li><a th:href="@{/groups}">스터디 그룹</a></li>
+                <li><a th:href="@{/auth/logout}">로그아웃</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div th:if="${message}" class="alert alert-success">
+        <p th:text="${message}"></p>
+    </div>
+
+    <div th:if="${param.error == 'notfound'}" class="alert alert-danger">
+        <p>그룹을 찾을 수 없습니다.</p>
+    </div>
+
+    <div th:if="${param.error == 'accessdenied'}" class="alert alert-danger">
+        <p>접근 권한이 없습니다.</p>
+    </div>
+
+    <section>
+        <h2>내 스터디 그룹</h2>
+        <div class="button-container">
+            <a th:href="@{/groups/create}" class="btn btn-primary">새 그룹 만들기</a>
+        </div>
+
+        <div th:if="${userGroups.empty}">
+            <p>참여 중인 스터디 그룹이 없습니다.</p>
+        </div>
+
+        <div th:unless="${userGroups.empty}" class="group-list">
+            <div th:each="group : ${userGroups}" class="group-card">
+                <h3><a th:href="@{/groups/{id}(id=${group.groupId})}" th:text="${group.name}">그룹명</a></h3>
+                <p th:text="${group.description}">그룹 설명</p>
+                <p class="meta">생성일: <span th:text="${#temporals.format(group.createdAt, 'yyyy-MM-dd')}">2025-01-01</span></p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>모든 스터디 그룹</h2>
+
+        <div th:if="${allGroups.empty}">
+            <p>스터디 그룹이 없습니다.</p>
+        </div>
+
+        <div th:unless="${allGroups.empty}" class="group-list">
+            <div th:each="group : ${allGroups}" class="group-card">
+                <h3><a th:href="@{/groups/{id}(id=${group.groupId})}" th:text="${group.name}">그룹명</a></h3>
+                <p th:text="${group.description}">그룹 설명</p>
+                <p class="meta">생성일: <span th:text="${#temporals.format(group.createdAt, 'yyyy-MM-dd')}">2025-01-01</span></p>
+
+                <form th:if="${!userGroups.contains(group)}" th:action="@{/groups/{id}/join(id=${group.groupId})}" method="post">
+                    <button type="submit" class="btn btn-secondary">가입하기</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
